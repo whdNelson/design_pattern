@@ -18,4 +18,5 @@ public interface StrategyPatternImportService {
      */
     StrategyPatternImportEnum getClassType();
 
+
 }
