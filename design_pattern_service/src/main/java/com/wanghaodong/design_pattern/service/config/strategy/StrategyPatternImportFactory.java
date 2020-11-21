@@ -1,4 +1,4 @@
-package com.wanghaodong.design_pattern.service.config;
+package com.wanghaodong.design_pattern.service.config.strategy;
 
 
 import com.wanghaodong.design_pattern.enums.StrategyPatternImportEnum;
@@ -22,7 +22,7 @@ public class StrategyPatternImportFactory implements ApplicationContextAware {
      * k:枚举名称
      * v:对应的实现类
      */
-    private static EnumMap<StrategyPatternImportEnum, StrategyPatternImportService> STRATEGY_SERVICE_MAP = new EnumMap<>(StrategyPatternImportEnum.class);
+    private static EnumMap<StrategyPatternImportEnum, StrategyPatternImportService> strategyServiceMap = new EnumMap<>(StrategyPatternImportEnum.class);
 
 
     /**
@@ -33,7 +33,7 @@ public class StrategyPatternImportFactory implements ApplicationContextAware {
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         Map<String,StrategyPatternImportService> serviceMap = applicationContext.getBeansOfType(StrategyPatternImportService.class);
-        serviceMap.forEach((k,v) -> STRATEGY_SERVICE_MAP.put(v.getClassType(),v));
+        serviceMap.forEach((k,v) -> strategyServiceMap.put(v.getClassType(),v));
     }
 
     /**
@@ -43,6 +43,6 @@ public class StrategyPatternImportFactory implements ApplicationContextAware {
      * @return
      */
     public StrategyPatternImportService getService(StrategyPatternImportEnum type){
-        return STRATEGY_SERVICE_MAP.get(type);
+        return strategyServiceMap.get(type);
     }
 }
