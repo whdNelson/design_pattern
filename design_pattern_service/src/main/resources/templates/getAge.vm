@@ -1,0 +1,9 @@
+#if($p1 < 0)
+    --1
+#elseif($p1 >= 0 && $p1 < 10)
+    $ret --2
+#elseif($p1 >= 10 && $p1 < 25)
+    $ret --3
+#else
+    $ret --4
+#end
