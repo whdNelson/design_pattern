@@ -1,4 +1,4 @@
-package com.wanghaodong.design_pattern.service.impl;
+package com.wanghaodong.design_pattern.service;
 
 
 import java.util.Map;

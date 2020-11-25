@@ -1,6 +1,6 @@
 package com.wanghaodong.design_pattern.controller;
 
-import com.wanghaodong.design_pattern.service.impl.ChainOfResponsibilityDestinationHandle;
+import com.wanghaodong.design_pattern.service.ChainOfResponsibilityDestinationHandle;
 import com.wanghaodong.design_pattern.service.impl.chainofresponsibility.ChainOfResponsibilityDestinationOne;
 import com.wanghaodong.design_pattern.service.impl.chainofresponsibility.ChainOfResponsibilityDestinationThree;
 import com.wanghaodong.design_pattern.service.impl.chainofresponsibility.ChainOfResponsibilityDestinationTwo;

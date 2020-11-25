@@ -1,6 +1,6 @@
 package com.wanghaodong.design_pattern.service.impl.chainofresponsibility;
 
-import com.wanghaodong.design_pattern.service.impl.ChainOfResponsibilityDestinationHandle;
+import com.wanghaodong.design_pattern.service.ChainOfResponsibilityDestinationHandle;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
