@@ -17,6 +17,13 @@
             <artifactId>design_pattern_common</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+
+        <!--tk.mybatis依赖-->
+        <dependency>
+            <groupId>tk.mybatis</groupId>
+            <artifactId>mapper-spring-boot-starter</artifactId>
+            <version>2.1.5</version>
+        </dependency>
     </dependencies>
 
 </project>

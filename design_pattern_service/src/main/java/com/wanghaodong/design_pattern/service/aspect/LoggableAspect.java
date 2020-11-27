@@ -3,6 +3,8 @@ package com.wanghaodong.design_pattern.service.aspect;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wanghaodong.design_pattern.annotation.Loggable;
+import com.wanghaodong.design_pattern.model.AgeLog;
+import com.wanghaodong.design_pattern.service.AopVmLoggableService;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
@@ -13,10 +15,13 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.Method;
@@ -26,6 +31,9 @@ import java.util.Map;
 @Aspect
 @Component
 public class LoggableAspect {
+
+    @Autowired
+    private AopVmLoggableService aopVmLoggableService;
 
     /**
      * execution后表达式规则描述
@@ -73,34 +81,44 @@ public class LoggableAspect {
         }
         //判断注解参数
         String memo = loggable.memo();
+        AgeLog ageLog = new AgeLog();
         if (!StringUtils.isEmpty(memo)) {
+            ageLog.setMemo(memo);
             System.out.println(memo);
         }else {
             //执行模板功能
             String templateResourceName = "templates/" + methodName + ".vm";//模板文件路径
-            ClassPathResource cp = new ClassPathResource(templateResourceName);
-            if (!cp.exists()) return "";
-
-            VelocityEngine vEngine = new VelocityEngine();
-            //基础属性设置
-            vEngine.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
-            vEngine.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
-            vEngine.setProperty(Velocity.ENCODING_DEFAULT, "UTF-8");
-            vEngine.setProperty(Velocity.INPUT_ENCODING, "UTF-8");
-            vEngine.setProperty(Velocity.OUTPUT_ENCODING, "UTF-8");
-
-            //获取模板文件
-            org.apache.velocity.Template template = vEngine.getTemplate(templateResourceName);
-            //模板内容格式化
-            VelocityContext velocityContext=new VelocityContext(context);
-            //套用模板
-            Writer out = new StringWriter();
-            template.merge(velocityContext, out);
-            out.flush();
-            System.out.println(out.toString());
+            ageLog.setMemo(compileTemplate(templateResourceName,context));
         }
+        aopVmLoggableService.create(ageLog);
 
         return point.proceed();
+
+    }
+
+
+    private String compileTemplate(String resource, Map<String, Object> context) throws IOException {
+
+        ClassPathResource cp = new ClassPathResource(resource);
+        if (!cp.exists()) return "";
+
+        VelocityEngine vEngine = new VelocityEngine();
+        //基础属性设置
+        vEngine.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
+        vEngine.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
+        vEngine.setProperty(Velocity.ENCODING_DEFAULT, "UTF-8");
+        vEngine.setProperty(Velocity.INPUT_ENCODING, "UTF-8");
+        vEngine.setProperty(Velocity.OUTPUT_ENCODING, "UTF-8");
+
+        //获取模板文件
+        org.apache.velocity.Template template = vEngine.getTemplate(resource,"UTF-8");
+        //模板内容格式化
+        VelocityContext velocityContext=new VelocityContext(context);
+        //套用模板
+        Writer out = new StringWriter();
+        template.merge(velocityContext, out);
+        out.flush();
+        return out.toString();
 
     }
 
