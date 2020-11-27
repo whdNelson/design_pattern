@@ -4,6 +4,7 @@ import com.wanghaodong.design_pattern.annotation.Loggable;
 import com.wanghaodong.design_pattern.mapper.AgeLogMapper;
 import com.wanghaodong.design_pattern.model.AgeLog;
 import com.wanghaodong.design_pattern.service.AopVmLoggableService;
+import com.wanghaodong.design_pattern.vo.AgeLogVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,8 +23,9 @@ public class AopVmLoggableServiceImpl implements AopVmLoggableService {
     }
 
     @Override
-    @Loggable
-    public Integer getAge(Integer age) {
-        return age;
+    @Loggable(age = "$p1.age")
+    public String getAge(AgeLogVo age) {
+
+        return age.getAge();
     }
 }

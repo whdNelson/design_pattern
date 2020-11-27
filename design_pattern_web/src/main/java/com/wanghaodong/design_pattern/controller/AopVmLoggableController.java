@@ -1,6 +1,7 @@
 package com.wanghaodong.design_pattern.controller;
 
 import com.wanghaodong.design_pattern.service.AopVmLoggableService;
+import com.wanghaodong.design_pattern.vo.AgeLogVo;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,10 +21,9 @@ public class AopVmLoggableController {
 
     /**
      * 通过切面记录年龄的日志，在vm模板中根据年龄不同区分年龄段
-     * @param age 入参年龄
      */
     @GetMapping
-    public Integer strategyPattern(Integer age){
-        return aopVmLoggableService.getAge(age);
+    public String strategyPattern(AgeLogVo ageLogVo){
+        return aopVmLoggableService.getAge(ageLogVo);
     }
 }

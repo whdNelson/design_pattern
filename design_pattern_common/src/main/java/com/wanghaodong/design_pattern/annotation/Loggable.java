@@ -10,5 +10,7 @@ import java.lang.annotation.Target;
 @Target(value = { ElementType.METHOD })
 public @interface Loggable {
 
+    String age();
+
     String memo() default "";
 }

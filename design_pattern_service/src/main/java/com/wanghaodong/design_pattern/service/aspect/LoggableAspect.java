@@ -90,6 +90,8 @@ public class LoggableAspect {
             String templateResourceName = "templates/" + methodName + ".vm";//模板文件路径
             ageLog.setMemo(compileTemplate(templateResourceName,context));
         }
+
+        ageLog.setAge(compileString(loggable.age(),context));
         aopVmLoggableService.create(ageLog);
 
         return point.proceed();
@@ -120,6 +122,20 @@ public class LoggableAspect {
         out.flush();
         return out.toString();
 
+    }
+
+    private String compileString(String resource, Map<String, Object> context)
+            throws IOException {
+        VelocityEngine vEngine = new VelocityEngine();
+        vEngine.setProperty(Velocity.ENCODING_DEFAULT, "UTF-8");
+        vEngine.setProperty(Velocity.INPUT_ENCODING, "UTF-8");
+        vEngine.setProperty(Velocity.OUTPUT_ENCODING, "UTF-8");
+
+        VelocityContext velocityContext = new VelocityContext(context);
+        Writer out = new StringWriter();
+        vEngine.evaluate(velocityContext,out,"",resource);
+        out.flush();
+        return out.toString();
     }
 
 }
